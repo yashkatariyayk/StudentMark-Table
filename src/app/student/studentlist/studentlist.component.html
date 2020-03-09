@@ -1,0 +1,66 @@
+<div class="form-group has-search" style="width: 20rem; ">
+  <label class="col-md-4"><b>Search</b></label>
+  <input
+    class="form-control mr-sm-2"
+    type="search"
+    placeholder="Search With Student Name"
+    aria-label="Search"
+    [(ngModel)]="searchname"
+  />
+</div>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Sr.no.</th>
+      <th scope="col">Name</th>
+      <th scope="col">Maths</th>
+      <th scope="col">Physics</th>
+      <th scope="col">Science</th>
+      <th scope="col">Total</th>
+      <th scope="col">Avg</th>
+      <th scope="col">Pass/Fail</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let student of students | student: searchname; let i = index">
+      <th>{{ i + 1 }}</th>
+      <td>{{ student.Name }}</td>
+      <td>{{ student.Maths }}</td>
+      <td>{{ student.Physics }}</td>
+      <td>{{ student.Science }}</td>
+      <td>{{ student.Maths + student.Physics + student.Science }}</td>
+      <td>{{ (student.Maths + student.Physics + student.Science) / 3 }}</td>
+      <td
+        *ngIf="
+          (student.Maths + student.Physics + student.Science) / 3 > 50;
+          else fail
+        "
+      >
+        Pass
+      </td>
+      <ng-template #fail>
+        <td>Fail</td>
+      </ng-template>
+
+      <nav>
+        <button class="btn btn-primary" [routerLink]="['/edit', student._id]">
+          Edit
+        </button>
+        <button class="btn btn-danger" (click)="deleteStudent(student._id)">
+          Delete
+        </button>
+      </nav>
+    </tr>
+  </tbody>
+</table>
+
+<div
+  *ngIf="!students || students.length === 0"
+  class="alert alert-danger"
+  role="alert"
+  style="text-align: center;"
+>
+  <p>Your Cart is Empty</p>
+</div>
